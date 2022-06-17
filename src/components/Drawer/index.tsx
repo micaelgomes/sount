@@ -1,86 +1,91 @@
-import {DrawerItem, DrawerItemList} from '@react-navigation/drawer';
 import React from 'react';
+import DrawerItem from '../DrawerItem';
 
 import * as S from './styled';
 import logoSrc from '../../assets/brand/logo.png';
-import Icon from 'react-native-vector-icons/Feather';
+import {generatePosts} from '../../fakes/post';
+import {database} from '../../database';
+import Post from '../../database/models/Post';
+import {unsafeClearDatabase} from '../../utils/clearDatabase';
 
-const CustomDrawerContent = (props: any) => (
-  <S.DrawerContainer {...props}>
-    <S.DrawerHeaderContainer>
-      <S.ImageBrandLogo source={logoSrc} />
-      <S.HeaderTitle>Aster News</S.HeaderTitle>
-    </S.DrawerHeaderContainer>
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 
-    {/* <DrawerItemList {...props} /> */}
+const CustomDrawerContent = (props: any) => {
+  const postsRepository = database.collections.get<Post>('posts');
+  const navigation = useNavigation();
 
-    <DrawerItem
-      label="Home"
-      focused
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="home" />
-      )}
-    />
+  const closeNavbar = () => navigation.dispatch(DrawerActions.closeDrawer());
 
-    <DrawerItem
-      label="Around the World"
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="globe" />
-      )}
-    />
+  return (
+    <S.DrawerContainer {...props}>
+      <S.DrawerHeaderContainer>
+        <S.ImageBrandLogo source={logoSrc} />
+        <S.HeaderTitle>Aster News</S.HeaderTitle>
+      </S.DrawerHeaderContainer>
 
-    <DrawerItem
-      label="Business"
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="briefcase" />
-      )}
-    />
+      <DrawerItem
+        label="Home"
+        iconName="home"
+        focused
+        onPress={() => navigation.navigate('Home')}
+      />
+      <DrawerItem
+        label="Around the World"
+        iconName="globe"
+        focused={false}
+        onPress={() => undefined}
+      />
+      <DrawerItem
+        label="Business"
+        iconName="briefcase"
+        focused={false}
+        onPress={() => undefined}
+      />
+      <DrawerItem
+        label="Health"
+        iconName="activity"
+        focused={false}
+        onPress={() => undefined}
+      />
 
-    <DrawerItem
-      label="Health"
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="activity" />
-      )}
-    />
+      <S.DrawerDivider />
 
-    <S.DrawerDivider />
+      <DrawerItem
+        label="Gerar 100 Posts"
+        iconName="database"
+        focused={false}
+        onPress={() => {
+          generatePosts(100, postsRepository);
+          closeNavbar();
+        }}
+      />
+      <DrawerItem
+        label="Gerar 10.000 Posts"
+        iconName="database"
+        focused={false}
+        onPress={() => {
+          generatePosts(10000, postsRepository);
+          closeNavbar();
+        }}
+      />
 
-    <DrawerItem
-      label="Gerar 100 Posts"
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="database" />
-      )}
-    />
-    <DrawerItem
-      label="Gerar 10.000 Posts"
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="database" />
-      )}
-    />
+      <S.DrawerDivider />
 
-    <S.DrawerDivider />
-
-    <DrawerItem
-      label="Estatísticas"
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="bar-chart" />
-      )}
-    />
-    <DrawerItem
-      label="Limpar Banco "
-      onPress={() => undefined}
-      icon={({focused, color, size}) => (
-        <Icon color={color} size={size} name="alert-triangle" />
-      )}
-    />
-  </S.DrawerContainer>
-);
+      <DrawerItem
+        label="Estatísticas"
+        iconName="bar-chart"
+        focused={false}
+        onPress={() => navigation.navigate('Analytics')}
+      />
+      <DrawerItem
+        label="Limpar Banco"
+        iconName="alert-triangle"
+        focused={false}
+        danger
+        onPress={() => unsafeClearDatabase()}
+      />
+    </S.DrawerContainer>
+  );
+};
 
 export default CustomDrawerContent;

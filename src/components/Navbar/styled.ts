@@ -1,4 +1,8 @@
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
+
+interface SearchPros {
+  focus: boolean;
+}
 
 export const Container = styled.View`
   flex-direction: row;
@@ -29,12 +33,17 @@ export const WrapperProfile = styled.View`
   align-items: center;
 `;
 
-export const LabelProfile = styled.Text`
+export const LabelProfile = styled.TextInput<SearchPros>`
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 18px;
-
   color: #072d4b;
+
+  ${props =>
+    props.focus &&
+    css`
+      width: 200px;
+    `}
 `;

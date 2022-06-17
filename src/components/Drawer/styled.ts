@@ -14,18 +14,33 @@ export const DrawerHeaderContainer = styled.View`
 `;
 
 export const DrawerDivider = styled.View`
-  background-color: #072d4b;
-  width: 100%;
+  background-color: #667f90;
+  width: 85%;
   height: 1px;
-  opacity: 0.6;
+  opacity: 0.3;
 
   margin: 8px 0;
+`;
+
+export const DrawerListItemBefore = styled.View`
+  position: absolute;
+  background-color: #2f9ff8;
+  width: 6px;
+  height: 6px;
+  left: -16px;
+  bottom: 8px;
+  border-radius: 6px;
+`;
+
+export const DrawerListItemIcon = styled.View`
+  position: relative;
 `;
 
 export const ImageBrandLogo = styled.Image`
   width: 30px;
   height: 35px;
   margin-right: 16px;
+  margin-left: 16px;
 `;
 
 export const HeaderTitle = styled.Text`

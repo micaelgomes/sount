@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import Icon from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
   background-color: #fff;
@@ -6,7 +7,7 @@ export const Container = styled.View`
   elevation: 1;
 
   padding: 16px;
-  margin: 16px 0 16px 0;
+  margin: 8px 16px;
 `;
 
 export const WrapperContent = styled.View`
@@ -48,9 +49,25 @@ export const ImagePost = styled.Image`
   margin-left: 8px;
 `;
 
+export const WrapperFooter = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 export const WrapperInfosCard = styled.View`
   flex-direction: row;
   align-items: center;
+`;
+
+export const WrapperIcons = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-right: 8px;
+`;
+
+export const IconBottom = styled(Icon)`
+  margin-left: 16px;
+  margin-right: 16px;
 `;
 
 export const AuthorName = styled.Text`
