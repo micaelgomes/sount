@@ -19,6 +19,7 @@ export const generatePosts = async (
         getRandomNumber(0, 100) % 5 === 0
           ? 'https://picsum.photos/200'
           : undefined,
+      liked: faker.datatype.boolean(),
     });
   }
 

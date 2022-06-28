@@ -1,3 +1,4 @@
+import Icon from 'react-native-vector-icons/Feather';
 import styled, {css} from 'styled-components/native';
 
 interface SearchPros {
@@ -19,6 +20,10 @@ export const WrapperBrand = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+
+export const NavbarIcon = styled(Icon)`
+  margin-right: 8px;
 `;
 
 export const ImageBrandLogo = styled.Image`

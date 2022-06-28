@@ -1,3 +1,12 @@
+import {database} from './src/database';
+if (__DEV__) {
+  const {
+    connectDatabases,
+    WatermelonDB,
+  } = require('react-native-flipper-databases');
+
+  connectDatabases([new WatermelonDB(database)]);
+}
 /**
  * @format
  */

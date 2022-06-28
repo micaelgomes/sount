@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import * as S from './styled';
-import Icon from 'react-native-vector-icons/Feather';
 
 import logoSrc from '../../assets/brand/logo.png';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
@@ -17,23 +16,13 @@ const Navbar: React.FC = () => {
     <S.Container>
       <S.WrapperBrand>
         <Pressable onPress={toogleNavbar}>
-          <Icon
-            name="menu"
-            size={20}
-            color="#072D4B"
-            style={{marginRight: 8}}
-          />
+          <S.NavbarIcon name="menu" size={20} color="#072D4B" />
         </Pressable>
 
         <S.ImageBrandLogo source={logoSrc} />
       </S.WrapperBrand>
       <S.WrapperProfile>
-        <Icon
-          name="search"
-          size={20}
-          color="#072D4B"
-          style={{marginRight: 8}}
-        />
+        <S.NavbarIcon name="search" size={20} color="#072D4B" />
         <S.LabelProfile
           value={search}
           onChangeText={text => setSearch(text)}

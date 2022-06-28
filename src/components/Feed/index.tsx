@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import {database} from '../../database';
 import Post from '../../database/models/Post';
-import Card from '../Card';
+import EnhancedCard from '../Card';
 
 import * as S from './styled';
 
@@ -11,6 +13,29 @@ type FeedProps = {
 };
 
 const Feed: React.FC<FeedProps> = ({posts, from = 'home'}) => {
+  const [listToExclude, setListToExclude] = useState<string[]>([]);
+
+  const handleSelectionToExclude = (id: string) => {
+    if (!listToExclude.includes(id)) {
+      setListToExclude([...listToExclude, id]);
+    }
+  };
+
+  const handleDeleting = async () => {
+    const postsRepository = await database.collections
+      .get<Post>('posts')
+      .query()
+      .fetch();
+    const deletedPosts = postsRepository
+      .filter(post => listToExclude.includes(post.id))
+      .map(post => post.prepareMarkAsDeleted());
+    database.write(async () => {
+      await database
+        .batch(...deletedPosts)
+        .catch(error => console.log('Erro: ', error));
+    });
+  };
+
   return (
     <FlatList
       data={posts}
@@ -19,7 +44,17 @@ const Feed: React.FC<FeedProps> = ({posts, from = 'home'}) => {
       ListHeaderComponent={() => {
         if (posts.length) {
           return from === 'home' ? (
-            <S.TitleHome>Top Stories for you</S.TitleHome>
+            <S.WrapperTitle>
+              <S.TitleHome>Top Stories for you</S.TitleHome>
+              {listToExclude.length > 0 && (
+                <Icon
+                  name="trash-2"
+                  size={20}
+                  color="#F00"
+                  onPress={handleDeleting}
+                />
+              )}
+            </S.WrapperTitle>
           ) : (
             <S.TitleHome>{`${posts.length} results for you`}</S.TitleHome>
           );
@@ -28,14 +63,15 @@ const Feed: React.FC<FeedProps> = ({posts, from = 'home'}) => {
         return <></>;
       }}
       renderItem={({item}) => (
-        <Card
-          id={item.id}
-          title={item.title}
-          content={item.content}
-          author={item.author}
-          timeToRead={`${item.timeToRead} mins ago`}
-          imgPath={item.imagePath}
-        />
+        <S.WrapperCard>
+          <EnhancedCard post={item} />
+          <S.FeedCardIcon
+            name="x"
+            size={16}
+            color={listToExclude.includes(item.id) ? '#F00' : '#000'}
+            onPress={() => handleSelectionToExclude(item.id)}
+          />
+        </S.WrapperCard>
       )}
       ListEmptyComponent={() => (
         <S.FeedAnimationContainer>

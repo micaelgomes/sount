@@ -82,7 +82,10 @@ const CustomDrawerContent = (props: any) => {
         iconName="alert-triangle"
         focused={false}
         danger
-        onPress={() => unsafeClearDatabase()}
+        onPress={() => {
+          unsafeClearDatabase();
+          closeNavbar();
+        }}
       />
     </S.DrawerContainer>
   );

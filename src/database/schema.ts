@@ -11,6 +11,14 @@ export default appSchema({
         {name: 'author', type: 'string'},
         {name: 'time_to_read', type: 'number'},
         {name: 'image_path', type: 'string', isOptional: true},
+        {name: 'liked', type: 'boolean'},
+      ],
+    }),
+    tableSchema({
+      name: 'comments',
+      columns: [
+        {name: 'body', type: 'string'},
+        {name: 'post_id', type: 'string', isIndexed: true},
       ],
     }),
   ],

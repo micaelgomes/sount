@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import LottieView from 'lottie-react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
 export const FeedAnimationContainer = styled.View`
   justify-content: center;
@@ -33,4 +34,19 @@ export const TitleNoContent = styled.Text`
 
   color: #072d4b;
   margin: 16px;
+`;
+
+export const WrapperTitle = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const WrapperCard = styled.Pressable`
+  position: relative;
+`;
+
+export const FeedCardIcon = styled(Icon)`
+  position: absolute;
+  top: 16px;
+  right: 24px;
 `;
