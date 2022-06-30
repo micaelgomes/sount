@@ -1,5 +1,5 @@
 import {Model} from '@nozbe/watermelondb';
-import {immutableRelation, text} from '@nozbe/watermelondb/decorators';
+import {relation, text} from '@nozbe/watermelondb/decorators';
 import {Associations} from '@nozbe/watermelondb/Model';
 import Post from './Post';
 
@@ -12,5 +12,10 @@ export default class Comment extends Model {
 
   @text('body') body!: string;
 
-  @immutableRelation('posts', 'post_id') post!: Post;
+  @relation('posts', 'post_id') post!: Post;
+}
+
+export interface IComment {
+  body: string;
+  post?: Post;
 }

@@ -20,6 +20,7 @@ export const generatePosts = async (
           ? 'https://picsum.photos/200'
           : undefined,
       liked: faker.datatype.boolean(),
+      comments: [],
     });
   }
 
@@ -31,6 +32,7 @@ export const generatePosts = async (
         post.author = newPost.author;
         post.timeToRead = newPost.timeToRead;
         post.imagePath = newPost.imagePath;
+        post.comments = newPost.comments;
       }),
     );
 

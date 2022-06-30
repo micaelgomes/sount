@@ -33,10 +33,10 @@ export const TextContent = styled.Text`
 
   color: #072d4b;
   opacity: 0.6;
-  margin-bottom: 48px;
 `;
 
 export const InfoPublish = styled.Text`
+  margin-top: 48px;
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
@@ -62,11 +62,13 @@ export const TextAuthorName = styled.Text`
 export const ContainerComments = styled.View`
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 16px;
 `;
 
 export const WrapperComment = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-top: 24px;
 `;
 
 export const TitleComments = styled.Text`
@@ -89,7 +91,17 @@ export const InputComment = styled.TextInput`
   line-height: 28px;
   padding: 0 5px;
 
-  /* width: 100%; */
   color: #072d4b;
   opacity: 0.4;
+`;
+
+export const TextComment = styled.Text`
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 28px;
+
+  color: #072d4b;
+  opacity: 0.6;
 `;

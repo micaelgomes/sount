@@ -5,6 +5,7 @@ import schema from './schema';
 import migrations from './migrations';
 
 import Post from './models/Post';
+import Comment from './models/Comment';
 
 const adapter = new SQLiteAdapter({
   schema,
@@ -14,7 +15,7 @@ const adapter = new SQLiteAdapter({
 
 const database = new Database({
   adapter,
-  modelClasses: [Post],
+  modelClasses: [Post, Comment],
 });
 
 export {database};

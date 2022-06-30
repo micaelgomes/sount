@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Pressable} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {DrawerScreenProps} from '@react-navigation/drawer';
@@ -7,35 +7,24 @@ import withObservables from '@nozbe/with-observables';
 
 import {database} from '../../database';
 import Post from '../../database/models/Post';
-import Comment from '../../database/models/Comment';
 
 import * as S from './styled';
+import {where} from '@nozbe/watermelondb/QueryDescription';
+import Comment from '../../database/models/Comment';
 
 type PostPageProps = DrawerScreenProps<any> & {
   post: Post;
+  comments: Comment[];
 };
 
-const PostPage: React.FC<PostPageProps> = ({post}) => {
+const PostPage: React.FC<PostPageProps> = ({post, comments}) => {
   const [comment, setComment] = useState('');
-  const [commentsList, setCommentsList] = useState<Comment[]>([]);
-
-  const getComments = async () => {
-    const res = await database.get<Comment>('comments').query().fetch();
-    setCommentsList(res);
-  };
-
-  useEffect(() => {
-    getComments();
-  }, []);
 
   const handleAddComment = async () => {
-    await database
-      .get<Comment>('comments')
-      .create(newComment => {
-        newComment.body = comment;
-        newComment.post = post;
-      })
-      .then(() => setComment(''));
+    await post
+      .addComment(comment)
+      .then(() => setComment(''))
+      .catch(error => console.log('Erro: ', error));
   };
 
   return (
@@ -45,8 +34,8 @@ const PostPage: React.FC<PostPageProps> = ({post}) => {
       <S.TextContent>{post?.content}</S.TextContent>
       <S.ContainerComments>
         <S.TitleComments>Comentários</S.TitleComments>
-        {commentsList.map(item => (
-          <S.TextContent>{item.body}</S.TextContent>
+        {comments.map(item => (
+          <S.TextComment>{item.body}</S.TextComment>
         ))}
         <S.WrapperComment>
           <S.InputComment
@@ -69,9 +58,16 @@ const PostPage: React.FC<PostPageProps> = ({post}) => {
 
 const enhance = withObservables(
   ['route'],
-  ({route}: {route: RouteProp<{params: {id: string}}>}) => ({
-    post: database.get<Post>('posts').findAndObserve(route.params.id),
-  }),
+  ({route}: {route: RouteProp<{params: {id: string}}>}) => {
+    const postsRepository = database.get<Post>('posts');
+    const commentsRepository = database.get<Comment>('comments');
+    return {
+      post: postsRepository.findAndObserve(route.params.id),
+      comments: commentsRepository
+        .query(where('post_id', route.params.id))
+        .observe(),
+    };
+  },
 );
 
 const EnhancedPostPage = enhance(PostPage);
